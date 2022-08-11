@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout :: head">
+    <title>Employee Manager</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<h3 th:bgcolor="red"
+>Staff Manager</h3>
+<br>
+<p>
+    <a type="button" class="btn btn-warning" th:href="@{/staff/create}">ADD NEW STAFF</a>
+</p>
+<div class="notify">
+    <div th:if="${success}">
+        <span th:text="${success}"></span>
+    </div>
+</div>
+<div>
+    <form action="/staff/search" method="post">
+        <table>
+            <tr>
+                <td>
+                    <input type="text" placeholder="Search" name="search">
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-outline-success"> Search</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br>
+</div>
+    </tbody>
+    </tbody>
+</table>
+<table id = "staffs">
+    <thead>
+    <tr>
+        <th style="text-align: center">Employee Code</th>
+        <th style="text-align: center">Name</th>
+        <th style="text-align: center">Age</th>
+        <th style="text-align: center">Salary</th>
+        <th style="text-align: center">Branch</th>
+        <th colspan="2" style="text-align: center">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="s : ${staffs}">
+        <td scope="row" th:text="${s.getStaffCode()}"></td>
+        <td scope="row"><a th:href="@{/staff/{id}/view(id=${s.getIdStaff()})}" th:text="${s.getStaffName()}"></a></td>
+        <td scope="row" th:text="${s.getStaffAge()}"></td>
+        <td scope="row" th:text="${s.getSalary()}"></td>
+        <td scope="row" th:text="${s.getBranch().getNameBranch()}"></td>
+
+        <td style="text-align: center"><a class="btn btn-secondary" th:href="@{/staff/{id}/edit(id=${s.getIdStaff()})}">EDIT</a></td>
+        <td style="text-align: center"><a type="button" class="btn btn-primary" data-toggle="modal" th:href="@{/staff/{id}/delete(id=${s.getIdStaff()})}">DELETE</a></td>
+
+    </tr>
+    </tbody>
+</table>
+<!--<a th:if="${!staffs.isLast()}" th:href="@{staffs(page=${staffs.number + 1})}">>>></a>-->
+<!--<a th:if="${!staffs.isFirst()}" th:href="@{staffs(page=${staffs.number -1})}"><<<<</a>-->
+
+
+
+<a th:if="${staffs.hasPrevious()}"  th:href="@{/staff(page=${staffs.number}-1)}"><<<<<<<</a>
+<button th:each="i: ${#numbers.sequence(1, staffs.totalPages)}" class="btn btn-outline-secondary" th:text="(${i})" th:href="@{/staff(page=${i} - 1)}"></button>
+<a th:if="${staffs.hasNext()}"  th:href="@{staff(page=${staffs.number}+1)}"><<<<<<<</a>
+<footer th:replace="/layout :: footer" ></footer>
+</body>
+</html>
